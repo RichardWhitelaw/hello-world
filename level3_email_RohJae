@@ -1,0 +1,78 @@
+Richard, 
+I apologize for the delay in response. We completely understand the value of the ViaSat-specified
+Site Name. I will forward this specific request to the API development team to see if we can get
+this done as an enhancement. I agree, any changes made through the portal (or offline by the account
+team or support team) will be reflected in the API as well. 
+ 
+Can you say more about what "additional information" you would like to add in addition to Site Name?
+As the name implies, it is intended to describe the location rather than the service itself. Perhaps
+you are actually looking to add more information about the service (that might be different for each
+service at one location?). 
+ 
+Also, here is alternative which may be slightly faster for us to implement: What if we were to add
+that to the returned result in the ServiceInventory API instead? 
+This is a call that returns service information for all active services:
+//api.level3.com/OA/v1/Ticketing/serviceImage?customerNumber=1-ABCDEF 
+Right now, this returns an array of all services, which you could then cache somewhere for lookup
+and correlation when a ticket is opened on a particular service. We may be also able to add a filter
+parameter to allow searching for a particular serviceID, product, or location instead, so you
+wouldn't have to persist anything on your side. Instead, you could simply make the request for the
+additional service info as needed (without having to sort through the entire list). 
+ 
+Here is the current information that is returned. 
+ 
+Name               Data Type      Description 
+----               ---------      -----------
+serviceIdentifier  String      CenturyLink-assigned Service Instance ID (SID) 
+bandwidth          String      An indicator of the capacity and/or speed of a circuit. Example: DS3, which equates to a speed of 45 Mbps. 
+product            String      The type of service that has been purchased. 
+serviceType        String      One of the four major types of services or products provided by Level 3: Transport, IP, CDN and Voice services. 
+serviceLocation    String      The physical address where your services are located. 
+customerNumber     String      Also known as a Customer ID, Account ID or BUS-ORG ID. 
+billingAccount     String      The Billing Account number assigned to the service. 
+productIdentifier  String      The CenturyLink Product Identifier (PIID). 
+alternateId        String      If it exists, this was the customer's Legacy Customer Number or Legacy Account ID. 
+accountName        String      Customer name as displayed in the MyLevel3 portal. 
+serviceComponentId String      Service Component ID or SCID 
+ 
+ 
+ 
+From: "Whitelaw, Richard" <richard.whitelaw@viasat.com> 
+Date: Thursday, March 8, 2018 at 12:12 PM 
+To: "Furaus, Mark" <Mark.Furaus@Level3.com>, Jae Roh <Jae.Roh@Level3.com> 
+Cc: "Ciago, James" <James.Ciago@Level3.com>, "Rafii, Edward" <Edward.Rafii@viasat.com>, "Tang, Dustin" <Dustin.Tang@viasat.com> 
+Subject: RE: ViaSat - Production Ticketing API Credentials 
+ 
+Gentlemen; 
+ 
+Is it practicable for you to add the information in the “Site Name” column of the Level3 Portal to the information accessible via the REST API? 
+ 
+The way your Portal is currently being used by Viasat is: 
+                An order for a new circuit is opened. 
+                In response to that order, Level3 creates a new record in the Service Inventory table of the Portal. 
+                                In that record, the Site Name field is assigned a placeholder like ‘VIASAT’ or some such. 
+                Viasat’s Dustin Tang logs into the  Portal and changes the value of the Site Name field to something appropriate to the actual site. 
+ 
+What we would like to have (which doesn’t seem to be too ambitious) is a configuration supporting the following scenario: 
+                A Viasat person modifies the placeholder Site Name to its permanent value—possibly including additional information on elements of 
+                                the total circuit beyond what’s provided by Level3. 
+                The information in that modified Site Name field is automatically retrieved by ViaSat’s interface to Level3’s REST API and provided 
+                                to ViaSat’s NOC and any other interested parties. 
+ 
+                One possible problem with this scenario other than the current inaccessibility of the Site Name to the REST API is that the Site Name 
+                                field width is not big enough to accommodate the “additional information” mentioned above. 
+                                Is it reasonable to assume that you at Level3 could do one or both of: 
+                                  1.  Expand the size of the Site Name field 
+                                  2.  Add an additional field that would be accessible both to the Portal and the REST API 
+                                                ? 
+                                Note that I am assuming here that manual modifications by Viasat personnel (Dustin Tang) to the Portal contents will 
+                                                be visible via the REST API. 
+From: Furaus, Mark [mailto:Mark.Furaus@centurylink.com] 
+Sent: Friday, March 02, 2018 2:32 PM 
+To: Whitelaw, Richard; Roh, Jae 
+Cc: Ciago, James 
+Subject: RE: ViaSat - Production Ticketing API Credentials 
+ 
+Adding Jae who might have some insight on these questions. I know our API roadmap for 2018 is not yet solidified. 
+ 
+-Mark 
